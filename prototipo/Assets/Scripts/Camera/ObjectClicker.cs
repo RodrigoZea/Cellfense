@@ -32,7 +32,7 @@ public class ObjectClicker : MonoBehaviour{
     }
 
     void OnCreatorClick(GameObject go, string tag, GameObject[] texts, GameObject floatingText) {
-        Vector3 textPosition = new Vector3(go.transform.position.x + 2, go.transform.position.y + 5, go.transform.position.z - 2.3f);
+        Vector3 textPosition = new Vector3(go.transform.position.x + 3, go.transform.position.y + 5, go.transform.position.z - 2.3f);
         texts = GameObject.FindGameObjectsWithTag(tag);
 
         if (texts.Length > 0) {

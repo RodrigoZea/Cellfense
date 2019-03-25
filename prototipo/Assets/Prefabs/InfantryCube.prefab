@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3481325114846933940}
   - component: {fileID: 4528705377154113259}
   - component: {fileID: 5798588753810842967}
-  - component: {fileID: 5220487371862865085}
+  - component: {fileID: 4239419932005813717}
   - component: {fileID: 7365906028518305838}
   m_Layer: 0
   m_Name: InfantryCube
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &5220487371862865085
+--- !u!114 &4239419932005813717
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,10 +133,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2064433730589710603}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f084f6236857f43a4bb4e017facae4, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bda0a3c225efc34499ca886ca3eacfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   psystem: {fileID: 5825096854339092981}
+  warrior: {fileID: 7829606392524218655, guid: 4713fb5fd8d86cb40ae0e9fce86709d5, type: 3}
 --- !u!54 &7365906028518305838
 Rigidbody:
   m_ObjectHideFlags: 0

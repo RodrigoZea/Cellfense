@@ -11,12 +11,14 @@ public class PlatformSpawner : MonoBehaviour
     public GameObject bcg;
     public GameObject infantry;
     public GameObject path;
+    public GameObject bloodCell;
     //public GameObject baker;
     GameObject go;
     // Start is called before the first frame update
     void Start()
     {
         go = new GameObject();
+        Instantiate(bloodCell, new Vector3(0, 1.19f, 0), Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -49,38 +51,35 @@ public class PlatformSpawner : MonoBehaviour
     }
 
 
-    public void spawnBCG() {
+    public void spawnSomething(int limit, GameObject cube) {
         spawnLog();
 
-        GameObject newBCG = (GameObject) Instantiate(bcg, go.transform.position, Quaternion.identity);
-        NavMeshSurface nms = newBCG.GetComponent<NavMeshSurface>();
+        if (ResourceManager.Instance.bloodPts >= limit)
+        {
+            ResourceManager.Instance.deductPoints(limit);
 
-        addToBake(nms);
+            GameObject newCube = (GameObject)Instantiate(cube, go.transform.position, Quaternion.identity);
+            NavMeshSurface nms = newCube.GetComponent<NavMeshSurface>();
+
+            addToBake(nms);
+            ResourceManager.Instance.positionList.Add(newCube.transform.position);
+            ResourceManager.Instance.updatePos(newCube.transform.position);
+        }
 
         destroyLog();
     }
 
+    public void spawnBCG() {
+        spawnSomething(10, bcg);
+    }
+
     public void spawnI() {
-        spawnLog();
-
-        GameObject newInfantry = (GameObject) Instantiate(infantry, go.transform.position, Quaternion.identity);
-        NavMeshSurface nms = newInfantry.GetComponent<NavMeshSurface>();
-
-        addToBake(nms);
-
-        destroyLog();
+        spawnSomething(20, infantry);
     }
 
     public void spawnPath()
     {
-        spawnLog();
-
-        GameObject newPath = (GameObject) Instantiate(path, go.transform.position, Quaternion.identity);
-        NavMeshSurface nms = newPath.GetComponent<NavMeshSurface>();
-
-        addToBake(nms);
-
-        destroyLog();
+        spawnSomething(5, path);
     }
 
 }

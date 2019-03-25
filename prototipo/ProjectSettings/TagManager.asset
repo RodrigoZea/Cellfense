@@ -10,6 +10,9 @@ TagManager:
   - Infantry
   - BloodFactory
   - Delete
+  - Bullet
+  - Enemy
+  - WhiteCell
   layers:
   - Default
   - TransparentFX

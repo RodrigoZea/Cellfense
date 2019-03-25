@@ -48,7 +48,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -4710,6 +4710,8 @@ GameObject:
   - component: {fileID: 8658939022381640136}
   - component: {fileID: 516220620594822683}
   - component: {fileID: 8149040636702597003}
+  - component: {fileID: 444381261715448545}
+  - component: {fileID: 5521499453480672244}
   - component: {fileID: 5971730909038349369}
   m_Layer: 0
   m_Name: BloodGeneratorCube
@@ -4791,6 +4793,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &444381261715448545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8561926499154263256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f084f6236857f43a4bb4e017facae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodCell: {fileID: 7873466381222477205, guid: 1d4393a4d3d15d542b6cde7ff0b3d7c5,
+    type: 3}
+  psystem: {fileID: 487185914385391535}
+--- !u!114 &5521499453480672244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8561926499154263256}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f54e7d9abaf0544cbd57f64e15732f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodGain: 2
+  psystem: {fileID: 487185914385391535}
 --- !u!114 &5971730909038349369
 MonoBehaviour:
   m_ObjectHideFlags: 0
