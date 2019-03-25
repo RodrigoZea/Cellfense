@@ -6,33 +6,63 @@ using UnityEngine.AI;
 
 public class WhiteCellMov : MonoBehaviour
 {
+    public GameObject impactEffect;
     public GameObject bullet;
     public Transform firePoint;
+    public float range = 30f;
 
     NavMeshAgent agent;
     Vector3 startPosition;
-    private int indexInList;
+
     private float health = 170;
     private Transform target;
 
     public float fireRate = 1f;
     private float fireCountdown = 0f;
+
+    public string enemyTag = "Enemy";
     // Start is called before the first frame update
     void Start()
     {
-        startPosition = this.gameObject.transform.position;
+        startPosition = gameObject.transform.position;
         agent = GetComponent<NavMeshAgent>();
-        ResourceManager.Instance.playerSpawns.Add(agent);
-        indexInList = ResourceManager.Instance.psIndex;
-        ResourceManager.Instance.psIndex++;
+        ResourceManager.Instance.playerList.Add(gameObject);
+        InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
+
+    void UpdateTarget() {
+        //GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        float shortestDistance = Mathf.Infinity;
+        GameObject nearestEnemy = null;
+
+        foreach (GameObject enemy in ResourceManager.Instance.enemyList) {
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distanceToEnemy < shortestDistance) {
+                shortestDistance = distanceToEnemy;
+                nearestEnemy = enemy;
+            }
+        }
+
+        if (nearestEnemy != null && shortestDistance <= range) {
+            target = nearestEnemy.transform;
+        }
+
+    }
+
 
     // Update is called once per frame
     void Update()
     {
         if (ResourceManager.Instance.attacking == true)
         {
-            findClosest();
+            if (target == null)
+            {
+                agent.SetDestination(startPosition);
+            }
+            else {
+                Vector3 whereTo = new Vector3(target.position.x - 5, target.position.y - 5, target.position.z - 5);
+                agent.SetDestination(whereTo);
+            }
 
             if (fireCountdown <= 0) {
                 Shoot();
@@ -58,23 +88,6 @@ public class WhiteCellMov : MonoBehaviour
         }
     }
 
-    void findClosest()
-    {
-        NavMeshAgent nearestObj = new NavMeshAgent();
-        foreach (var player in ResourceManager.Instance.enemySpawns)
-        {
-            nearestObj = ResourceManager.Instance.enemySpawns.FindClosest(player.transform.position);
-        }
-        if (nearestObj != null)
-        {
-            Vector3 wcd = new Vector3(nearestObj.transform.position.x - 3, nearestObj.transform.position.y - 3, nearestObj.transform.position.z - 3);
-            agent.destination = wcd;
-            target = nearestObj.transform;
-            Debug.DrawLine(gameObject.transform.position, nearestObj.transform.position, Color.red);
-        }
-
-    }
-
     private void OnCollisionStay(Collision collision)
     {
         if (collision.collider.gameObject.tag == "Enemy")
@@ -90,11 +103,13 @@ public class WhiteCellMov : MonoBehaviour
 
     private void deleteWhiteBloodCell()
     {
-        ResourceManager.Instance.playerSpawns.RemoveAt(indexInList);
-        if (ResourceManager.Instance.playerSpawns.Count == 0)
+        GameObject effectIns = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
+        Destroy(effectIns, 2f);
+        ResourceManager.Instance.playerList.Remove(gameObject);
+        Destroy(gameObject);
+        if (ResourceManager.Instance.playerList.Count == 0)
         {
             ResourceManager.Instance.gameLost();
         }
-        Destroy(gameObject);
     }
 }

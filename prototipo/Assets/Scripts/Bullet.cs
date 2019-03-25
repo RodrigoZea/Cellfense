@@ -7,6 +7,8 @@ public class Bullet : MonoBehaviour
     private Transform target;
     public float speed = 35f;
     public GameObject impactEffect;
+    public AudioClip laser;
+    private AudioSource bas;
 
     public void Seek(Transform _target){
         target = _target;
@@ -14,7 +16,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        bas = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -39,6 +41,7 @@ public class Bullet : MonoBehaviour
 
     void HitTarget() {
         GameObject effectIns = (GameObject) Instantiate(impactEffect, transform.position, transform.rotation);
+        bas.PlayOneShot(laser, 0.20f);
         Destroy(effectIns, 2f);
         Destroy(gameObject);
     }

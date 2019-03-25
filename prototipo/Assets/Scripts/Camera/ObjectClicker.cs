@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ObjectClicker : MonoBehaviour{
     public GameObject floatingText;
@@ -13,22 +14,59 @@ public class ObjectClicker : MonoBehaviour{
     }
 
     // Update is called once per frame
-    void Update(){
-        if (Input.GetMouseButtonDown(0)) {
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, 100.0f)) {
-                if (hit.transform != null) {
-                    if (hit.transform.gameObject.tag == "Creators") {
+            if (Physics.Raycast(ray, out hit, 100.0f))
+            {
+                if (hit.transform != null)
+                {
+                    if (hit.transform.gameObject.tag == "Creators")
+                    {
                         OnCreatorClick(hit.transform.gameObject, "Options", texts, floatingText);
                     }
-                    /*else if (hit.transform.gameObject.tag == "Mesh" || hit.transform.gameObject.tag == "Infantry" || hit.transform.gameObject.tag == "BloodFactory") {
-                        OnCreatorClick(hit.transform.gameObject, "Delete", deletetexts, deleteText);
-                    }*/
+
                 }
             }
         }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit, 100.0f))
+            {
+                if (hit.transform != null)
+                {
+                    if (hit.transform.gameObject.tag == "Mesh" || hit.transform.gameObject.tag == "Infantry" || hit.transform.gameObject.tag == "BloodFactory")
+                    {
+                        Destroy(hit.transform.gameObject);
+                        NavMeshBaker.Instance.navMeshSurfaces.Remove(hit.transform.gameObject.GetComponent<NavMeshSurface>());
+                        NavMeshBaker.Instance.Bake();
+                        addPoints(hit.transform.gameObject.tag);
+                    }
+                }
+
+            }
+        }
+    }
+
+    void addPoints(string tag) {
+            switch (tag) { 
+                case "Mesh":
+                    ResourceManager.Instance.addPts(3);
+                    break;
+                case "Infantry":
+                    ResourceManager.Instance.addPts(10);
+                    break;
+                case "BloodFactory":
+                    ResourceManager.Instance.addPts(5);
+                    break;
+            }
     }
 
     void OnCreatorClick(GameObject go, string tag, GameObject[] texts, GameObject floatingText) {

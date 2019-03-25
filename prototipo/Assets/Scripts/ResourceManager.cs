@@ -17,19 +17,18 @@ public class ResourceManager : MonoBehaviour
     public Text bcellsText;
     public Text dcellsText;
 
+    public float enemyHealth = 15;
+
     public List<Vector3> positionList = new List<Vector3>();
     public GameObject enemies;
     public GameObject gameOverPanel;
     public bool gameOver = false;
 
-    //Arbol con enemigos y celulas del jugador
-    public KdTree<NavMeshAgent> playerSpawns = new KdTree<NavMeshAgent>();
-    public KdTree<NavMeshAgent> enemySpawns = new KdTree<NavMeshAgent>();
-    public int psIndex = 0;
-    public int esIndex = 0;
 
     //lista con cada cosa por construir, para ver si algo falta de ser construido.
     //public List<GameObject> path = new List<GameObject>();
+    public List<GameObject> playerList = new List<GameObject>();
+    public List<GameObject> enemyList = new List<GameObject>();
 
     public Vector3 currPosition;
     public int currentTime = 0;
@@ -44,6 +43,7 @@ public class ResourceManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("game start");
         positionList.Add(new Vector3(0, 0, 0));
         currWave.enabled = false;
         wavebar.fillAmount = 0;
@@ -84,6 +84,7 @@ public class ResourceManager : MonoBehaviour
     }
 
     public void gameLost() {
+        Time.timeScale = 0;
         gameOverPanel.SetActive(true);
     }
 
@@ -100,13 +101,18 @@ public class ResourceManager : MonoBehaviour
 
         StartCoroutine(spawnEnemies());
         //spawnEnemySpawner();
-        roundLimit += 2;
+
+        addLimit();
         changeText(waveNo, currWave);
         waveNo += 1;
         addPts(5);
+        enemyHealth += 15;
     }
 
-
+    void addLimit() {
+        int randomAdd = Random.Range(1, 3);
+        roundLimit += randomAdd;
+    }
 
     IEnumerator spawnEnemies() {
         for (int i = 0; i < roundLimit; i++)

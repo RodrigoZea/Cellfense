@@ -5,35 +5,57 @@ using UnityEngine.AI;
 
 public class EnemyMov : MonoBehaviour
 {
-    private int indexInList;
-    private float health = 70;
+    public float health = 0;
     NavMeshAgent nva;
+    public GameObject impactEffect;
+    private Transform target;
+    public string playerTag = "Player";
+    public float range = 60f;
     // Start is called before the first frame update
     void Start()
     {
+        health = ResourceManager.Instance.enemyHealth;
         nva = GetComponent<NavMeshAgent>();
-        ResourceManager.Instance.enemySpawns.Add(nva);
-        indexInList = ResourceManager.Instance.esIndex;
-        ResourceManager.Instance.esIndex++;
+        ResourceManager.Instance.enemyList.Add(gameObject);
+        InvokeRepeating("UpdateTarget", 0f, 0.3f);
+    }
+
+    void UpdateTarget()
+    {
+        //GameObject[] players = GameObject.FindGameObjectsWithTag(playerTag);
+        float shortestDistance = Mathf.Infinity;
+        GameObject nearestEnemy = null;
+
+        foreach (GameObject player in ResourceManager.Instance.playerList)
+        {
+            float distanceToEnemy = Vector3.Distance(transform.position, player.transform.position);
+            if (distanceToEnemy < shortestDistance)
+            {
+                shortestDistance = distanceToEnemy;
+                nearestEnemy = player;
+            }
+        }
+
+        if (nearestEnemy != null && shortestDistance <= range)
+        {
+            target = nearestEnemy.transform;
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        findClosest();
+        if (target == null)
+        {
+            return;
+        }
+        else
+        {
+            nva.SetDestination(target.position);
+        }
     }
         
-    void findClosest() {
-        NavMeshAgent nearestObj = new NavMeshAgent();
-        foreach (var player in ResourceManager.Instance.playerSpawns) {
-            nearestObj = ResourceManager.Instance.playerSpawns.FindClosest(player.transform.position);
-        }
-        if (nearestObj != null) {
-            nva.destination = nearestObj.transform.position;
-            Debug.DrawLine(gameObject.transform.position, nearestObj.transform.position, Color.blue);
-        }
-
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -49,8 +71,9 @@ public class EnemyMov : MonoBehaviour
 
     void destroyEnemy()
     {
-        ResourceManager.Instance.enemySpawns.RemoveAt(indexInList);
-        ResourceManager.Instance.esIndex -= 1;
+        ResourceManager.Instance.enemyList.Remove(gameObject);
+        GameObject effectIns = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
+        Destroy(effectIns, 2f);
         Destroy(gameObject);
     }
 }

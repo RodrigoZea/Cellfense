@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 3793138224264890384}
   m_Layer: 0
   m_Name: WhiteCell
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,9 +136,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a121a637bb35ab844a8c846491d6bf51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactEffect: {fileID: 7103660217766104434, guid: 9323dc745d4d5f445b8d0457fc24d0c6,
+    type: 3}
   bullet: {fileID: 5038188908020707516, guid: 4462a46ae71410647825e9e80ee24601, type: 3}
   firePoint: {fileID: 6249983759703912206}
+  range: 30
   fireRate: 1
+  enemyTag: Enemy
 --- !u!195 &3793138224264890384
 NavMeshAgent:
   m_ObjectHideFlags: 0

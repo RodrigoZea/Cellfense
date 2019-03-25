@@ -106,6 +106,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3b0eed6b697da4186706075614de6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  impactEffect: {fileID: 2090086616492829591, guid: 0ab2b01335132ac4b9762db8b6345171,
+    type: 3}
+  playerTag: Player
+  range: 60
 --- !u!54 &5351744245800283632
 Rigidbody:
   m_ObjectHideFlags: 0

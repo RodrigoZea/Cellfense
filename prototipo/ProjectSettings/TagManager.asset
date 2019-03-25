@@ -13,6 +13,7 @@ TagManager:
   - Bullet
   - Enemy
   - WhiteCell
+  - StartingMesh
   layers:
   - Default
   - TransparentFX
@@ -47,6 +48,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Effect
+    uniqueID: 691710797
+    locked: 0
   - name: FX
     uniqueID: 3305192743
     locked: 0

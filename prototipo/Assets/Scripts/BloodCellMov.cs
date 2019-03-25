@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class BloodCellMov : MonoBehaviour
 {
+    public GameObject impactEffect;
     NavMeshAgent agent;
     Vector3 startPosition;
-    private int indexInList;
     private float health = 100;
 
     // Start is called before the first frame update
@@ -15,9 +15,7 @@ public class BloodCellMov : MonoBehaviour
     {
         startPosition = this.gameObject.transform.position;
         agent = GetComponent<NavMeshAgent>();
-        ResourceManager.Instance.playerSpawns.Add(agent);
-        indexInList = ResourceManager.Instance.psIndex;
-        ResourceManager.Instance.psIndex++;
+        ResourceManager.Instance.playerList.Add(gameObject);
         //Debug.Log(ResourceManager.Instance.playerSpawns.Count);
     }
 
@@ -45,11 +43,13 @@ public class BloodCellMov : MonoBehaviour
     }
 
     private void deleteBloodCell() {
-        ResourceManager.Instance.playerSpawns.RemoveAt(indexInList);
-        if (ResourceManager.Instance.playerSpawns.Count == 0) {
+        GameObject effectIns = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
+        Destroy(effectIns, 2f);
+        ResourceManager.Instance.playerList.Remove(gameObject);
+        Destroy(gameObject);
+        if (ResourceManager.Instance.playerList.Count == 0) {
             ResourceManager.Instance.gameLost();
         }
-        Destroy(gameObject);
     }
 
 }
