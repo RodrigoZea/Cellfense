@@ -12,6 +12,7 @@ public class ResourceManager : MonoBehaviour
     public int currCount;
     public Text points;
     public Text currWave;
+    public Text waveClearTxt;
     public Image wavebar;
 
     public Text bcellsText;
@@ -23,7 +24,8 @@ public class ResourceManager : MonoBehaviour
     public GameObject enemies;
     public GameObject gameOverPanel;
     public bool gameOver = false;
-
+    private bool inWave = false;
+    public GameObject waveClearPanel;
 
     //lista con cada cosa por construir, para ver si algo falta de ser construido.
     //public List<GameObject> path = new List<GameObject>();
@@ -69,7 +71,9 @@ public class ResourceManager : MonoBehaviour
     void Update()
     {
         //currentTime += 3;
-        wavebar.fillAmount += multiplier * Time.deltaTime;
+        if (inWave == false) {
+            wavebar.fillAmount += multiplier * Time.deltaTime;
+        }
         if (wavebar.fillAmount >= 1) {
             nextWave();
         }
@@ -88,6 +92,13 @@ public class ResourceManager : MonoBehaviour
         gameOverPanel.SetActive(true);
     }
 
+    public void waveClear() {
+        inWave = false;
+        Debug.Log("Wave clear");
+        //waveClearTxt.enabled = true;
+        //gameOverPanel.SetActive(true);
+    }
+
     void changeText(int number, Text waveText) {
         waveText.text = "wave " + number.ToString();
         //currWave.enabled = false;
@@ -95,6 +106,7 @@ public class ResourceManager : MonoBehaviour
 
     void nextWave() {
         attacking = true;
+        inWave = true;
         currWave.enabled = true;
         wavebar.fillAmount = 0;
 
@@ -129,7 +141,7 @@ public class ResourceManager : MonoBehaviour
 
             Vector3 randomPos = generatePosition(playerPositionList, randomPosList);
             Instantiate(enemies, randomPos, Quaternion.identity);
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2.5f);
         }
 
     }

@@ -10,7 +10,7 @@ public class EnemyMov : MonoBehaviour
     public GameObject impactEffect;
     private Transform target;
     public string playerTag = "Player";
-    public float range = 60f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +36,7 @@ public class EnemyMov : MonoBehaviour
             }
         }
 
-        if (nearestEnemy != null && shortestDistance <= range)
+        if (nearestEnemy != null)
         {
             target = nearestEnemy.transform;
         }
@@ -75,5 +75,9 @@ public class EnemyMov : MonoBehaviour
         GameObject effectIns = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
         Destroy(effectIns, 2f);
         Destroy(gameObject);
+        if (ResourceManager.Instance.enemyList.Count == 0)
+        {
+            ResourceManager.Instance.waveClear();
+        }
     }
 }

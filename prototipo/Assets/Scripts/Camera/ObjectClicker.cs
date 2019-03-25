@@ -44,15 +44,19 @@ public class ObjectClicker : MonoBehaviour{
                 {
                     if (hit.transform.gameObject.tag == "Mesh" || hit.transform.gameObject.tag == "Infantry" || hit.transform.gameObject.tag == "BloodFactory")
                     {
-                        Destroy(hit.transform.gameObject);
-                        NavMeshBaker.Instance.navMeshSurfaces.Remove(hit.transform.gameObject.GetComponent<NavMeshSurface>());
-                        NavMeshBaker.Instance.Bake();
-                        addPoints(hit.transform.gameObject.tag);
+                        deleteSomething(hit.transform.gameObject);
                     }
                 }
 
             }
         }
+    }
+
+    void deleteSomething(GameObject go) {
+        Destroy(go);
+        NavMeshBaker.Instance.navMeshSurfaces.Remove(go.GetComponent<NavMeshSurface>());
+        NavMeshBaker.Instance.Bake();
+        addPoints(go.tag);
     }
 
     void addPoints(string tag) {
